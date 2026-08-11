@@ -118,13 +118,12 @@ input,select{font-family:inherit;}
 .avatar-preview-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:6px;}
 .avatar-img{width:96px;height:96px;border-radius:50%;object-fit:cover;background:var(--bg-2);}
 .avatar-placeholder{width:96px;height:96px;border-radius:50%;background:var(--bg-2);display:flex;align-items:center;justify-content:center;font-size:32px;color:var(--text-faint);}
-.frame{box-shadow:0 0 0 4px var(--frame-color, rgba(255,255,255,0.15)), 0 0 20px var(--frame-glow, transparent);}
-.frame[data-frame="gold"]{--frame-color:var(--gold);--frame-glow:rgba(242,193,78,0.5);}
-.frame[data-frame="pink"]{--frame-color:var(--accent);--frame-glow:rgba(255,46,136,0.45);}
-.frame[data-frame="teal"]{--frame-color:var(--teal);--frame-glow:rgba(62,198,168,0.4);}
-.frame[data-frame="fire"]{--frame-color:#FF7A3C;--frame-glow:rgba(255,122,60,0.55);}
-.frame[data-frame="silver"]{--frame-color:#CFD8DC;--frame-glow:rgba(207,216,220,0.4);}
-.frame[data-frame="none"]{--frame-color:rgba(255,255,255,0.15);--frame-glow:transparent;}
+.frame-gold{box-shadow:0 0 0 4px var(--gold), 0 0 20px rgba(242,193,78,0.5);}
+.frame-pink{box-shadow:0 0 0 4px var(--accent), 0 0 20px rgba(255,46,136,0.45);}
+.frame-teal{box-shadow:0 0 0 4px var(--teal), 0 0 20px rgba(62,198,168,0.4);}
+.frame-fire{box-shadow:0 0 0 4px #FF7A3C, 0 0 22px rgba(255,122,60,0.55);}
+.frame-silver{box-shadow:0 0 0 4px #CFD8DC, 0 0 16px rgba(207,216,220,0.4);}
+.frame-none{box-shadow:0 0 0 3px rgba(255,255,255,0.15);}
 .frame-swatches{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
 .frame-swatch{width:36px;height:36px;border-radius:50%;background:var(--bg-2);cursor:pointer;border:2px solid transparent;}
 .frame-swatch.selected{border-color:white;}
@@ -607,7 +606,7 @@ function viewProfileForm(){
       <div class="field">
         <label>Marco de avatar</label>
         <div class="frame-swatches" id="frameSwatches">
-          ${FRAMES.map(f=>`<div class="frame-swatch ${d.frame===f?'selected':''}" data-frame="${f}"></div>`).join('')}
+          ${FRAMES.map(f=>`<div class="frame-swatch frame-${f} ${d.frame===f?'selected':''}" data-frame="${f}"></div>`).join('')}
         </div>
       </div>
       <div class="field">
