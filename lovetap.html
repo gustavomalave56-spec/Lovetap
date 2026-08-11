@@ -670,7 +670,7 @@ function viewLobby(){
       </div>
       <div class="row" style="gap:8px;">
         ${(isFounder||isController) ? `<button class="btn btn-ghost btn-sm" data-action="add-bot" ${present.length>=12?'disabled':''}>🤖 Agregar bot</button>` : ''}
-        ${isController ? `<button class="btn btn-primary" data-action="start-game" ${present.length<2?'disabled':''}>${present.length<2?'Esperando jugadores...':'Iniciar partida'}</button>` : ''}
+        ${isController ? `<button class="btn btn-primary" data-action="start-game">Jugar</button>` : ''}
       </div>
     </div>
     ${!isController ? `<div class="info-note" style="margin-top:10px;">Esperando a que ${room.controllerId===room.founderId?'el fundador':'quien tiene el control'} inicie la partida...</div>` : ''}
@@ -1178,7 +1178,19 @@ async function onAction(e){
   else if(action==='confirm-join'){ await handleJoinRoom(); }
   else if(action==='back-landing'){ state.draft=null; state.screen='landing'; state.intent=null; render(); }
   else if(action==='save-profile'){ await handleSaveProfile(); }
-  else if(action==='start-game'){ await handleStartGame(); }
+  else if(action==='start-game'){
+    if(!isController) return;
+    // Auto-fill to 12 players immediately
+    while(room.players.length < 12) {
+        await handleAddBot();
+    }
+    // Start the game
+    const gameData = { action: 'startGame', roomId: room.id };
+    if(window.socket) window.socket.emit('action', gameData);
+    // FORZAR cambio inmediato a pantalla de juego sin esperar respuesta del servidor
+    state.screen = 'game';
+    render();
+}
   else if(action==='leave-room'){ await handleLeaveRoom(); }
   else if(action==='toggle-pref'){ await handleTogglePref(); }
   else if(action==='edit-initial-coins'){ await handleEditInitialCoins(); }
